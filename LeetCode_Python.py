@@ -107,6 +107,24 @@ class Solution:
             numDict[nums[i]] = i
             i += 1
         return []
+    
+    # 4
+    def findMedianSortedArrays(self, nums1: List[int], nums2: List[int]) -> float:
+        nums = []
+        while nums1 and nums2:
+            if nums1[0] < nums2[0]:
+                nums.append(nums1.pop(0))
+            else:
+                nums.append(nums2.pop(0))
+        while nums1:
+            nums.append(nums1.pop(0))
+        while nums2:
+            nums.append(nums2.pop(0))
+        length = len(nums)
+        if length % 2 == 0:
+            return (nums[length // 2] + nums[length // 2 - 1]) / 2
+        else:
+            return nums[length // 2]
 
     # 9
     def isPalindrome(self, x):
@@ -1964,6 +1982,43 @@ class Solution:
                     count = 0
         return ans
     
+    # 567
+    def checkInclusion(self, s1: str, s2: str) -> bool:
+        # count chars in s1
+        chars = {}
+        for char in s1:
+            chars[char] = chars.get(char, 0) + 1
+        length1 = len(s1)
+        length2 = len(s2)
+        left = 0
+        right = left
+        # copy chars
+        tempChars = {}
+        for key, val in chars.items():
+                tempChars[key] = val
+        while right < length2:
+            # length exceeded
+            if right - left + 1 > length1:
+                for key, val in chars.items():
+                    tempChars[key] = val
+                left += 1
+                continue
+            # not a match
+            if not s2[right] in tempChars:
+                left += 1
+                for key, val in chars.items():
+                    tempChars[key] = val
+                right = left
+            # match found
+            else:
+                tempChars[s2[right]] = tempChars[s2[right]] - 1
+                if tempChars[s2[right]] < 1:
+                    del tempChars[s2[right]]
+                right += 1
+                if not tempChars:
+                    return True
+        return False
+    
     # 572
     def isSubtree(self, root: Optional[TreeNode], subRoot: Optional[TreeNode]) -> bool:
         def sameTree(root, root1):
@@ -2092,10 +2147,8 @@ class KthLargest:
         return self.queue[0]
     
     
-obj = KthLargest(1, [4, 5, 8, 2])
-print(obj.add(10))
 
-# %%
+
 # 705
 class MyHashSet:
 
@@ -2141,14 +2194,6 @@ class MyHashSet:
             return key in self.content[hashIndex]
 
 
-myHash = MyHashSet()
-myHash.add(1)
-myHash.add(2)
-myHash.add(2)
-myHash.remove(2)
-print(myHash.contains(2))
-
-# %%
 # 706
 class MyHashMap:
 
@@ -2193,16 +2238,8 @@ class MyHashMap:
                 i += 1
             if len(self.content[keyIndex]) == 0:
                 self.content[keyIndex] = None
-        
 
-myHashMap = MyHashMap()
-myHashMap.put(1, 2)
-myHashMap.put(2, 2)
-myHashMap.put(1, 10)
-myHashMap.remove(1)
-print(myHashMap.get(1))
 
-# %%
 class Solution:
     # 605
     def canPlaceFlowers(self, flowerbed: List[int], n: int) -> bool:
@@ -3008,9 +3045,8 @@ class Solution:
             cur = (cur * 10 + int(i)) % m
             div.append(1 if cur == 0 else 0)
         return div
+                
     
-    
-        
 
 
 # Test
@@ -3025,6 +3061,5 @@ node1.left = node2
 node1.right = node3
 node3.left = node4
 node3.right = node5
-print()
-
+print(solution.findMedianSortedArrays([1,2,4,7,90], [3, 8, 9, 12, 23]))
 
