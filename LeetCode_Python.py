@@ -107,24 +107,7 @@ class Solution:
             numDict[nums[i]] = i
             i += 1
         return []
-    
-    # 4
-    def findMedianSortedArrays(self, nums1: List[int], nums2: List[int]) -> float:
-        nums = []
-        while nums1 and nums2:
-            if nums1[0] < nums2[0]:
-                nums.append(nums1.pop(0))
-            else:
-                nums.append(nums2.pop(0))
-        while nums1:
-            nums.append(nums1.pop(0))
-        while nums2:
-            nums.append(nums2.pop(0))
-        length = len(nums)
-        if length % 2 == 0:
-            return (nums[length // 2] + nums[length // 2 - 1]) / 2
-        else:
-            return nums[length // 2]
+        
 
     # 9
     def isPalindrome(self, x):
@@ -3047,19 +3030,17 @@ class Solution:
         return div
                 
     
+        
 
 
 # Test
 solution = Solution()
-node1 = TreeNode(2)
-node2 = TreeNode(2)
-node3 = TreeNode(5)
-node4 = TreeNode(5)
-node5 = TreeNode(7)
-
-node1.left = node2
-node1.right = node3
-node3.left = node4
-node3.right = node5
-print(solution.findMedianSortedArrays([1,2,4,7,90], [3, 8, 9, 12, 23]))
-
+node1 = Node(1)
+node2 = Node(2)
+node3 = Node(3)
+node4 = Node(4)
+node1.next = node2
+node2.next = node3
+node3.next = node4
+node4.next = None
+print(solution.reorderList(node1))
