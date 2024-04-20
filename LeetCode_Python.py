@@ -208,6 +208,32 @@ class Solution:
                         left += 1
         return ans
     
+    # 19 
+    def removeNthFromEnd(self, head: Optional[ListNode], n: int) -> Optional[ListNode]:
+        def getLength(head):
+            if not head.next:
+                return 1
+            return 1 + getLength(head.next)
+        
+        def search(head, n, count):
+            if not head:
+                return
+            if count == n:
+                if head.next:
+                    head.next = head.next.next
+                else:
+                    head.next =None
+            search(head.next, n, count + 1)
+
+        length = getLength(head)
+        n = length - n
+        # remove head
+        if n == 0:
+            return head.next
+        temp = head
+        search(temp, n, 0)
+        return head
+
     # 20
     def isValid(self, s):
         '''
@@ -3028,9 +3054,8 @@ class Solution:
             cur = (cur * 10 + int(i)) % m
             div.append(1 if cur == 0 else 0)
         return div
-                
+
     
-        
 
 
 # Test
@@ -3043,4 +3068,6 @@ node1.next = node2
 node2.next = node3
 node3.next = node4
 node4.next = None
-print(solution.reorderList(node1))
+node5 = Node(0)
+node5.next = None
+print(solution.removeNthFromEnd(node5, 1))
