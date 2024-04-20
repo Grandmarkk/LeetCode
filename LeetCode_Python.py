@@ -783,6 +783,43 @@ class Solution:
         for key, val in discovered.items():
             if val == 1:
                 return key
+            
+    # 138
+    def copyRandomList(self, head: 'Optional[Node]') -> 'Optional[Node]':
+        def getNodes(head, nodes):
+            if not head:
+                return 
+            newNode = Node(head.val)
+            nodes.append(newNode)
+            getNodes(head.next, nodes)
+
+        def getOriginalNodes(head, nodes):
+            if not head:
+                return 
+            nodes.append(head)
+            getOriginalNodes(head.next, nodes)
+
+        def getRandom(head, randoms, nodes):
+            if not head:
+                return 
+            randoms.append(nodes.index(head.random) if head.random else None)
+            getRandom(head.next, randoms, nodes)
+
+        if not head:
+            return None
+        nodes = []
+        getNodes(head, nodes)
+        originalNodes = []
+        getOriginalNodes(head, originalNodes)
+        randoms = []
+        getRandom(head, randoms, originalNodes)
+        newHead = nodes[0]
+        i = 0
+        while i < len(nodes):
+            nodes[i].next = nodes[i+1] if i != len(nodes) - 1 else None
+            nodes[i].random = nodes[randoms[i]] if randoms[i] != None else None
+            i += 1
+        return newHead
     
     # 141
     def hasCycle(self, head):
@@ -3055,7 +3092,7 @@ class Solution:
             div.append(1 if cur == 0 else 0)
         return div
 
-    
+
 
 
 # Test
