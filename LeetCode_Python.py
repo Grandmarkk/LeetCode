@@ -108,6 +108,40 @@ class Solution:
             i += 1
         return []
         
+    # 2
+    def addTwoNumbers(self, l1: Optional[ListNode], l2: Optional[ListNode]) -> Optional[ListNode]:
+        curSum = (l1.val + l2.val) % 10
+        carry = (l1.val + l2.val) // 10
+        head = ListNode(curSum)
+        temp = head
+        l1 = l1.next
+        l2 = l2.next
+        while l1 and l2:
+            curSum = (carry + l1.val + l2.val) % 10
+            carry = (carry + l1.val + l2.val) // 10
+            newNode = ListNode(curSum)
+            head.next = newNode
+            head = head.next
+            l1 = l1.next
+            l2 = l2.next
+        while l1:
+            curSum = (carry + l1.val) % 10
+            carry = (carry + l1.val) // 10
+            newNode =ListNode(curSum)
+            head.next = newNode
+            head = head.next
+            l1 = l1.next
+        while l2:
+            curSum = (carry + l2.val) % 10
+            carry = (carry + l2.val) // 10
+            newNode =ListNode(curSum)
+            head.next = newNode
+            head = head.next
+            l2 = l2.next
+        if carry > 0:
+            newNode = ListNode(1)
+            head.next = newNode
+        return temp
 
     # 9
     def isPalindrome(self, x):
@@ -3092,7 +3126,8 @@ class Solution:
             div.append(1 if cur == 0 else 0)
         return div
 
-
+    
+        
 
 
 # Test
@@ -3105,6 +3140,8 @@ node1.next = node2
 node2.next = node3
 node3.next = node4
 node4.next = None
-node5 = Node(0)
-node5.next = None
-print(solution.removeNthFromEnd(node5, 1))
+
+ln1 = ListNode(5)
+ln2 = ListNode(5)
+
+print(solution.addTwoNumbers(ln1, ln2))
