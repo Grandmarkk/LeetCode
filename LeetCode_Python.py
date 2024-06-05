@@ -1224,6 +1224,14 @@ class Solution:
             else:
                 i += 1
     
+    # 287
+    def findDuplicate(self, nums: List[int]) -> int:
+        numsSet = set()
+        for num in nums:
+            if num in numsSet:
+                return num
+            numsSet.add(num)
+    
     # 290
     def wordPattern(self, pattern, s):
         patternDict = {}
@@ -3126,8 +3134,36 @@ class Solution:
             div.append(1 if cur == 0 else 0)
         return div
 
+    def maxDepth(self, root: Optional[TreeNode]) -> int:
+        def getDepth(root, depth):
+            if not root:
+                return depth
+            return max(getDepth(root.left, depth + 1), getDepth(root.right, depth + 1))
+        return getDepth(root, 0)
     
-        
+    # 1002
+    def commonChars(self, words: List[str]) -> List[str]:
+        # count all occurences
+        chars = []
+        for word in words:
+            curChars = {}
+            for char in word:
+                curChars[char] = 1 + curChars.get(char, 0)
+            chars.append(curChars)
+        # count common occurences
+        res = chars[0]
+        for i in range(1, len(chars)):
+            comp = chars[i]
+            for char, val in res.items():
+                if char in comp:
+                    res[char] = min(comp[char], val)
+                else:
+                    res[char] = 0
+        ans = []
+        for key, val in res.items():
+            for i in range(val):
+                ans.append(key)
+        return ans
 
 
 # Test
@@ -3144,4 +3180,4 @@ node4.next = None
 ln1 = ListNode(5)
 ln2 = ListNode(5)
 
-print(solution.addTwoNumbers(ln1, ln2))
+print(solution.commonChars(["bella","label","roller"]))
