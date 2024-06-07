@@ -2418,6 +2418,19 @@ class Solution:
             i += 1
         return ans
     
+    # 648
+    def replaceWords(self, dictionary: List[str], sentence: str) -> str:
+        words = sentence.split(" ")
+        dictionary.sort(key=len)
+        for i in range(len(words)):
+            wordLen = len(words[i])
+            for root in dictionary:
+                rootLen = len(root)
+                if rootLen <= wordLen and root == words[i][:rootLen]:
+                    words[i] = root
+                    break
+        return " ".join(words)
+    
     # 653
     def findTarget(self, root: Optional[TreeNode], k: int) -> bool:
         def getVals(root):
@@ -3094,6 +3107,26 @@ class Solution:
                 word1.append(char)
         return word == word1
     
+    # 846
+    def isNStraightHand(self, hand: List[int], groupSize: int) -> bool:
+        length = len(hand)
+        if length % groupSize != 0:
+            return False
+        # count the hands
+        cards = {}
+        for num in hand:
+            cards[num] = 1 + cards.get(num, 0)
+        while cards:
+            cardMin = min(cards.keys())
+            for i in range(groupSize):
+                if not cardMin in cards:
+                    return False
+                cards[cardMin] = cards[cardMin] - 1
+                if cards[cardMin] == 0:
+                    del cards[cardMin]
+                cardMin += 1
+        return True
+    
     # 853
     def carFleet(self, target: int, position: List[int], speed: List[int]) -> int:
         sorted = []
@@ -3125,22 +3158,6 @@ class Solution:
                 right = speed - 1
         return minSpeed
 
-    # 2575
-    def divisibilityArray(self, word: str, m: int) -> List[int]:
-        div = []
-        cur = 0
-        for i in word:
-            cur = (cur * 10 + int(i)) % m
-            div.append(1 if cur == 0 else 0)
-        return div
-
-    def maxDepth(self, root: Optional[TreeNode]) -> int:
-        def getDepth(root, depth):
-            if not root:
-                return depth
-            return max(getDepth(root.left, depth + 1), getDepth(root.right, depth + 1))
-        return getDepth(root, 0)
-    
     # 1002
     def commonChars(self, words: List[str]) -> List[str]:
         # count all occurences
@@ -3164,6 +3181,24 @@ class Solution:
             for i in range(val):
                 ans.append(key)
         return ans
+    
+    # 2575
+    def divisibilityArray(self, word: str, m: int) -> List[int]:
+        div = []
+        cur = 0
+        for i in word:
+            cur = (cur * 10 + int(i)) % m
+            div.append(1 if cur == 0 else 0)
+        return div
+
+    def maxDepth(self, root: Optional[TreeNode]) -> int:
+        def getDepth(root, depth):
+            if not root:
+                return depth
+            return max(getDepth(root.left, depth + 1), getDepth(root.right, depth + 1))
+        return getDepth(root, 0)
+    
+    
 
 
 # Test
@@ -3180,4 +3215,4 @@ node4.next = None
 ln1 = ListNode(5)
 ln2 = ListNode(5)
 
-print(solution.commonChars(["bella","label","roller"]))
+print(solution.replaceWords(["cat","bat","rat"], "the cattle was rattled by the battery"))
