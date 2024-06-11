@@ -3182,6 +3182,27 @@ class Solution:
                 ans.append(key)
         return ans
     
+    # 1122
+    def relativeSortArray(self, arr1: List[int], arr2: List[int]) -> List[int]:
+        counts = {}
+        # count arr1 elements
+        for num in arr1:
+            counts[num] = 1 + counts.get(num, 0)
+        ans = []
+        # get first part
+        for num in arr2:
+            for i in range(counts[num]):
+                ans.append(num)
+            del counts[num]
+        temp = []
+        # get remaining part
+        for key, val in counts.items():
+            for i in range(val):
+                temp.append(key)
+        temp.sort()
+        ans = ans + temp
+        return ans
+    
     # 2575
     def divisibilityArray(self, word: str, m: int) -> List[int]:
         div = []
@@ -3212,7 +3233,7 @@ node2.next = node3
 node3.next = node4
 node4.next = None
 
-ln1 = ListNode(5)
-ln2 = ListNode(5)
+in1 = [2,21,43,38,0,42,33,7,24,13,12,27,12,24,5,23,29,48,30,31]
+in2 = [2,42,38,0,43,21]
 
-print(solution.replaceWords(["cat","bat","rat"], "the cattle was rattled by the battery"))
+print(solution.relativeSortArray(in1, in2))
