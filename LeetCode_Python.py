@@ -570,6 +570,18 @@ class Solution:
                 left=  mid + 1
         return False
     
+    # 75
+    def sortColors(self, nums: List[int]) -> None:
+        counts = [0, 0, 0]
+        for num in nums:
+            counts[num] += 1
+        index = 0
+        for i in range(3):
+            while counts[i] > 0:
+                nums[index] = i
+                counts[i] -= 1
+                index += 1
+    
     # 83
     def deleteDuplicates(self, head):
         '''
@@ -3212,13 +3224,7 @@ class Solution:
             div.append(1 if cur == 0 else 0)
         return div
 
-    def maxDepth(self, root: Optional[TreeNode]) -> int:
-        def getDepth(root, depth):
-            if not root:
-                return depth
-            return max(getDepth(root.left, depth + 1), getDepth(root.right, depth + 1))
-        return getDepth(root, 0)
-    
+
     
 
 
@@ -3233,7 +3239,9 @@ node2.next = node3
 node3.next = node4
 node4.next = None
 
-in1 = [2,21,43,38,0,42,33,7,24,13,12,27,12,24,5,23,29,48,30,31]
+in1 = [2,0,2,1,1,0, 0, 2, 1, 0]
 in2 = [2,42,38,0,43,21]
 
-print(solution.relativeSortArray(in1, in2))
+print(solution.sortColors(in1))
+print(in1)
+
