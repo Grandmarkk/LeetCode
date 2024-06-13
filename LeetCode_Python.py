@@ -3215,6 +3215,12 @@ class Solution:
         ans = ans + temp
         return ans
     
+    # 2037
+    def minMovesToSeat(self, seats: List[int], students: List[int]) -> int:
+        seats.sort()
+        students.sort()
+        return sum([abs(x - y) for x, y in zip(seats, students)])
+    
     # 2575
     def divisibilityArray(self, word: str, m: int) -> List[int]:
         div = []
@@ -3224,7 +3230,7 @@ class Solution:
             div.append(1 if cur == 0 else 0)
         return div
 
-
+    
     
 
 
@@ -3239,9 +3245,9 @@ node2.next = node3
 node3.next = node4
 node4.next = None
 
-in1 = [2,0,2,1,1,0, 0, 2, 1, 0]
-in2 = [2,42,38,0,43,21]
+in1 = [4,1,5,9]
+in2 = [1,3,2,6]
 
-print(solution.sortColors(in1))
-print(in1)
+print(solution.minMovesToSeat(in1, in2))
+
 
