@@ -3173,15 +3173,24 @@ class Solution:
     # 945
     def minIncrementForUnique(self, nums: List[int]) -> int:
         counts = {}
+        maxNum = nums[0]
+        minNum = nums[0]
+        # count occurences
         for num in nums:
             counts[num] = 1 + counts.get(num, 0)
+            if num > maxNum:
+                maxNum = num
+            if num < minNum:
+                minNum = num
         moves = 0
-        i = 0
-        while i < pow(10, 5) + 1:
+        i = minNum
+        # count moves
+        while i < maxNum:
             if counts.get(i, 0) > 1:
                 moves += counts[i] - 1
                 counts[i+1] = counts[i] - 1 + counts.get(i+1, 0)
             i += 1
+        # largest num
         if counts.get(i, 0) > 1:
             remainder = counts[i]
             moves += sum([x for x in range(1, remainder)])
