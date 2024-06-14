@@ -3169,6 +3169,23 @@ class Solution:
                 minSpeed = min(minSpeed, speed)
                 right = speed - 1
         return minSpeed
+    
+    # 945
+    def minIncrementForUnique(self, nums: List[int]) -> int:
+        counts = {}
+        for num in nums:
+            counts[num] = 1 + counts.get(num, 0)
+        moves = 0
+        i = 0
+        while i < pow(10, 5) + 1:
+            if counts.get(i, 0) > 1:
+                moves += counts[i] - 1
+                counts[i+1] = counts[i] - 1 + counts.get(i+1, 0)
+            i += 1
+        if counts.get(i, 0) > 1:
+            remainder = counts[i]
+            moves += sum([x for x in range(1, remainder)])
+        return moves
 
     # 1002
     def commonChars(self, words: List[str]) -> List[str]:
@@ -3229,6 +3246,7 @@ class Solution:
             cur = (cur * 10 + int(i)) % m
             div.append(1 if cur == 0 else 0)
         return div
+        
 
     
     
@@ -3246,8 +3264,8 @@ node3.next = node4
 node4.next = None
 
 in1 = [4,1,5,9]
-in2 = [1,3,2,6]
+in2 = [0,0]
 
-print(solution.minMovesToSeat(in1, in2))
+print(solution.minIncrementForUnique(in2))
 
 
