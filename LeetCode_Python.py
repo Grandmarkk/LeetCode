@@ -1858,6 +1858,34 @@ class Solution:
                 modes.append(key)
         return modes
     
+    # 502
+    def findMaximizedCapital(self, k: int, w: int, profits: List[int], capital: List[int]) -> int:
+        # note all the projects in order of their cost
+        projects = {} # profit : [costs]
+        for profit, cap in zip(profits, capital):
+            if not profit in projects:
+                projects[profit] = [cap]
+            else:
+                heapq.heappush(projects[profit], cap)
+        projects = sorted(projects.items(), reverse=True)
+        # find max profit
+        length = len(projects)
+        while k > 0 and projects:
+            cur = 0
+            while cur < length and projects[cur][1][0] > w:
+                cur += 1
+            # valid project found
+            if cur < length:
+                w += projects[cur][0]
+                heapq.heappop(projects[cur][1])
+                if projects[cur][1] == []:
+                    del projects[cur]
+                    length -= 1
+                k -= 1
+            else:
+                return w
+        return w
+    
     # 504
     def convertToBase7(self, num: int) -> str:
         if num == 0:
@@ -3272,9 +3300,7 @@ node2.next = node3
 node3.next = node4
 node4.next = None
 
-in1 = [4,1,5,9]
-in2 = [0,0]
+in1 = [1,1,1,2,3,2,4,5]
+in2 = [0,1,2,2,1,4,3,4]
 
-print(solution.minIncrementForUnique(in2))
-
-
+print(solution.findMaximizedCapital(2, 0, in1, in2))
