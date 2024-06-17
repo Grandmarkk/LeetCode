@@ -2410,6 +2410,21 @@ class Solution:
         n = len(nums)
         return max(nums[0] * nums[1] * nums[n - 1], nums[n - 3] * nums[n - 2] * nums[n - 1])
     
+    # 633
+    def judgeSquareSum(self, c: int) -> bool:
+        a = 0
+        b = math.floor(math.sqrt(c))
+        while a <= b:
+            cur_sum = a ** 2 + b ** 2
+            if cur_sum > c:
+                b -= 1
+            elif cur_sum < c:
+                a += 1
+            else:
+                print(a, b)
+                return True
+        return False
+    
     # 637
     def averageOfLevels(self, root: Optional[TreeNode]) -> List[float]:
         def dfs(root: TreeNode, level: int):
@@ -3284,6 +3299,7 @@ class Solution:
             div.append(1 if cur == 0 else 0)
         return div
         
+    
 
     
     
@@ -3303,4 +3319,4 @@ node4.next = None
 in1 = [1,1,1,2,3,2,4,5]
 in2 = [0,1,2,2,1,4,3,4]
 
-print(solution.findMaximizedCapital(2, 0, in1, in2))
+print(solution.judgeSquareSum(1000000000))
