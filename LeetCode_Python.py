@@ -2257,7 +2257,6 @@ class Solution:
         return ans
 
 
-# %%
 import heapq
 
 # 703
@@ -3104,6 +3103,43 @@ class Solution:
         ans.append(''.join(curWord))
         return " ".join(ans)
     
+    # 826
+    def maxProfitAssignment(self, difficulty: List[int], profit: List[int], worker: List[int]) -> int:
+        # find the max profit at each difficulty level
+        profits = {}
+        cur_max = 0
+        for prof, dif in sorted(zip(profit, difficulty), key=lambda x : x[1]):
+            if prof > cur_max:
+                cur_max = prof
+            profits[dif] = cur_max
+
+        profits = sorted(profits.items())
+        worker.sort(reverse=True)
+        length = len(profits)
+        total_profit = 0
+        cur = length - 1
+        # assign work for each worker
+        for i in worker:
+            # binary search for a work
+            left = 0
+            right = cur
+            index = -1
+            while left <= right:
+                mid = (left + right) // 2
+                if profits[mid][0] > i:
+                    right = mid - 1
+                elif profits[mid][0] < i:
+                    left = mid + 1
+                else:
+                    index = mid
+                    break
+            if index == -1 and right > -1:
+                index = right
+            if index != -1:
+                total_profit += profits[index][1]
+                cur = index
+        return total_profit
+    
     # 830
     def largeGroupPositions(self, s: str) -> List[List[int]]:
         left = 0
@@ -3298,8 +3334,6 @@ class Solution:
             cur = (cur * 10 + int(i)) % m
             div.append(1 if cur == 0 else 0)
         return div
-        
-    
 
     
     
@@ -3319,4 +3353,6 @@ node4.next = None
 in1 = [1,1,1,2,3,2,4,5]
 in2 = [0,1,2,2,1,4,3,4]
 
-print(solution.judgeSquareSum(1000000000))
+print(solution.maxProfitAssignment([2,4,6,8,10], [10,20,30,40,50], [4,5,6,7]))
+
+# %%
