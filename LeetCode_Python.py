@@ -3320,6 +3320,32 @@ class Solution:
         ans = ans + temp
         return ans
     
+    # 1482
+    def minDays(self, bloomDay: List[int], m: int, k: int) -> int:
+        def possible(bloomDay, day, k):
+            cnt = 0
+            num = 0
+            for bd in bloomDay:
+                if bd <= day:
+                    cnt += 1
+                else:
+                    num += cnt // k
+                    cnt = 0
+            num += cnt // k
+            return num
+
+        left = 1
+        right = max(bloomDay)
+        while left <= right:
+            mid = (left + right) // 2
+            if possible(bloomDay, mid, k) >= m:
+                right = mid - 1
+            elif possible(bloomDay, mid, k) < m:
+                left = mid + 1
+        if left > max(bloomDay):
+            return -1
+        return left
+    
     # 2037
     def minMovesToSeat(self, seats: List[int], students: List[int]) -> int:
         seats.sort()
@@ -3335,6 +3361,7 @@ class Solution:
             div.append(1 if cur == 0 else 0)
         return div
 
+    
     
     
 
@@ -3353,6 +3380,5 @@ node4.next = None
 in1 = [1,1,1,2,3,2,4,5]
 in2 = [0,1,2,2,1,4,3,4]
 
-print(solution.maxProfitAssignment([2,4,6,8,10], [10,20,30,40,50], [4,5,6,7]))
+print(solution.minDays([1,10,3,10,2], 3, 2))
 
-# %%
