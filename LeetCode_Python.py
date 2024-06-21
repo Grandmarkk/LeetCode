@@ -3299,6 +3299,27 @@ class Solution:
                 ans.append(key)
         return ans
     
+    # 1052
+    def maxSatisfied(self, customers: List[int], grumpy: List[int], minutes: int) -> int:
+        satisfied = 0
+        i = 0
+        while i < len(customers):
+            if grumpy[i] == 0:
+                satisfied += customers[i]
+                customers[i] = 0
+            i += 1
+
+        max_boost = 0
+        cur_boost = 0
+        i = 0
+        while i < len(customers):
+            cur_boost += customers[i]
+            if i >= minutes:
+                cur_boost -= customers[i - minutes]
+            max_boost = max(cur_boost, max_boost)
+            i += 1
+        return satisfied + max_boost
+    
     # 1122
     def relativeSortArray(self, arr1: List[int], arr2: List[int]) -> List[int]:
         counts = {}
@@ -3382,10 +3403,7 @@ class Solution:
             cur = (cur * 10 + int(i)) % m
             div.append(1 if cur == 0 else 0)
         return div
-    
-    
         
-    
     
     
 
@@ -3404,5 +3422,5 @@ node4.next = None
 in1 = [1,1,1,2,3,2,4,5]
 in2 = [0,1,2,2,1,4,3,4]
 
-print(solution.maxDistance([1,3,2,4,7], 2))
+print(solution.maxSatisfied([1,0,1,2,1,1,7,5], [0,1,0,1,0,1,0,1], 3))
 
