@@ -3346,6 +3346,28 @@ class Solution:
             return -1
         return left
     
+    # 1552
+    def maxDistance(self, position: List[int], m: int) -> int:
+        def feasible(position, m, mid):
+            cnt = 1
+            prev = position[0]
+            for i in range(1, len(position)):
+                if position[i] - prev >= mid:
+                    cnt += 1
+                    prev = position[i]
+            return cnt >= m
+        
+        position.sort()
+        left = 1
+        right = position[-1] - position[0]
+        while left + 1 < right:
+            mid = (left + right) // 2
+            if feasible(position, m, mid):
+                left = mid
+            else:
+                right = mid - 1
+        return left if not feasible(position, m, right) else right
+    
     # 2037
     def minMovesToSeat(self, seats: List[int], students: List[int]) -> int:
         seats.sort()
@@ -3360,7 +3382,9 @@ class Solution:
             cur = (cur * 10 + int(i)) % m
             div.append(1 if cur == 0 else 0)
         return div
-
+    
+    
+        
     
     
     
@@ -3380,5 +3404,5 @@ node4.next = None
 in1 = [1,1,1,2,3,2,4,5]
 in2 = [0,1,2,2,1,4,3,4]
 
-print(solution.minDays([1,10,3,10,2], 3, 2))
+print(solution.maxDistance([1,3,2,4,7], 2))
 
