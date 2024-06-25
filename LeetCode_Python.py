@@ -3308,33 +3308,22 @@ class Solution:
             vals.append(root.val)
             traverse(root.left, vals)
 
-        def search(root, vals, length):
-            left = 0
-            right = length
-            while left <= right:
-                mid = (left + right) // 2
-                if vals[mid] == root.val:
-                    return mid
-                elif vals[mid] > root.val:
-                    left = mid + 1
-                else:
-                    right = mid - 1
-
-        def helper(root, vals, sums, length):
+        def helper(root, sums):
             if root == None:
                 return
-            root.val = sums[search(root, vals, length)]
-            helper(root.left, vals, sums, length)
-            helper(root.right, vals, sums, length)
+            root.val = sums[root.val]
+            helper(root.left, sums)
+            helper(root.right, sums,)
         
         vals = []
         traverse(root, vals)
-        length = len(vals)
-        greater_sum = [vals[0]]
-        for i in range(1, length):
-            greater_sum.append(greater_sum[i - 1] + vals[i])
+        greater_sum = {}
+        cur = 0
+        for i in range(len(vals)):
+            cur += vals[i]
+            greater_sum[vals[i]] = cur
 
-        helper(root, vals, greater_sum, length)
+        helper(root, greater_sum)
         return root
     
     # 1052
@@ -3455,10 +3444,6 @@ class Solution:
             cur = (cur * 10 + int(i)) % m
             div.append(1 if cur == 0 else 0)
         return div
-    
-    
-
-    
 
 
     
