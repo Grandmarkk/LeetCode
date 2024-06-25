@@ -3299,6 +3299,44 @@ class Solution:
                 ans.append(key)
         return ans
     
+    # 1038
+    def bstToGst(self, root: TreeNode) -> TreeNode:
+        def traverse(root, vals):
+            if root == None:
+                return 
+            traverse(root.right, vals)
+            vals.append(root.val)
+            traverse(root.left, vals)
+
+        def search(root, vals, length):
+            left = 0
+            right = length
+            while left <= right:
+                mid = (left + right) // 2
+                if vals[mid] == root.val:
+                    return mid
+                elif vals[mid] > root.val:
+                    left = mid + 1
+                else:
+                    right = mid - 1
+
+        def helper(root, vals, sums, length):
+            if root == None:
+                return
+            root.val = sums[search(root, vals, length)]
+            helper(root.left, vals, sums, length)
+            helper(root.right, vals, sums, length)
+        
+        vals = []
+        traverse(root, vals)
+        length = len(vals)
+        greater_sum = [vals[0]]
+        for i in range(1, length):
+            greater_sum.append(greater_sum[i - 1] + vals[i])
+
+        helper(root, vals, greater_sum, length)
+        return root
+    
     # 1052
     def maxSatisfied(self, customers: List[int], grumpy: List[int], minutes: int) -> int:
         satisfied = 0
@@ -3339,6 +3377,20 @@ class Solution:
                 temp.append(key)
         temp.sort()
         ans = ans + temp
+        return ans
+    
+    # 1248
+    def numberOfSubarrays(self, nums: List[int], k: int) -> int:
+        nums = [x % 2 for x in nums]
+        prefix_count = [0] * (len(nums) + 1)
+        prefix_count[0] = 1
+        s = 0
+        ans = 0
+        for num in nums:
+            s += num
+            if s >= k:
+                ans += prefix_count[s - k]
+            prefix_count[s] += 1
         return ans
     
     # 1482
@@ -3403,24 +3455,34 @@ class Solution:
             cur = (cur * 10 + int(i)) % m
             div.append(1 if cur == 0 else 0)
         return div
-        
+    
+    
+
+    
+
+
     
     
 
 
 # Test
 solution = Solution()
-node1 = Node(1)
-node2 = Node(2)
-node3 = Node(3)
-node4 = Node(4)
-node1.next = node2
-node2.next = node3
-node3.next = node4
-node4.next = None
+node1 = TreeNode(1)
+node2 = TreeNode(2)
+node3 = TreeNode(3)
+node4 = TreeNode(4)
+node5 = TreeNode(5)
+node6 = TreeNode(6)
+node7 = TreeNode(7)
+node4.left = node2
+node4.right = node6
+node2.left = node1
+node2.right = node3
+node6.left = node5
+node6.right = node7
 
 in1 = [1,1,1,2,3,2,4,5]
 in2 = [0,1,2,2,1,4,3,4]
 
-print(solution.maxSatisfied([1,0,1,2,1,1,7,5], [0,1,0,1,0,1,0,1], 3))
+print(solution.bstToGst(node4))
 
