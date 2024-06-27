@@ -3445,7 +3445,41 @@ class Solution:
             div.append(1 if cur == 0 else 0)
         return div
 
+    # 1382
+    def balanceBST(self, root: TreeNode) -> TreeNode:
+        def traverse(root, elements):
+            if root == None:
+                return 
+            traverse(root.left, elements)
+            elements.append(root.val)
+            traverse(root.right, elements)
 
+        def build_tree(elements):
+            if not elements:
+                return None
+            mid = len(elements) // 2
+            root = TreeNode(elements[mid])
+            root.left = build_tree(elements[:mid])
+            root.right = build_tree(elements[mid + 1:])
+            return root
+        
+        elements = []
+        traverse(root, elements)
+        return build_tree(elements)
+
+    # 1791
+    def findCenter(self, edges: List[List[int]]) -> int:
+        count = {}
+        for i in edges[:2]:
+            for j in i:
+                count[j] = 1 + count.get(j, 0)
+        max_count = 0
+        res = -1
+        for key, val in count.items():
+            if val > max_count:
+                max_count = val
+                res = key
+        return res
     
     
 
@@ -3469,5 +3503,5 @@ node6.right = node7
 in1 = [1,1,1,2,3,2,4,5]
 in2 = [0,1,2,2,1,4,3,4]
 
-print(solution.bstToGst(node4))
+print(solution.balanceBST(node4))
 
