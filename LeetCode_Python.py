@@ -3481,6 +3481,26 @@ class Solution:
                 res = key
         return res
     
+    # 2285
+    def maximumImportance(self, n: int, roads: List[List[int]]) -> int:
+        # count the number of edges of each node
+        connections = [0 for i in range(n)]
+        for edge in roads:
+            for j in edge:
+                connections[j] += 1
+        # assign importance
+        importance = [0 for i in range(n)]
+        sorted_nodes = sorted(zip(connections, [i for i in range(n)]), reverse=True) # (occurence, node)
+        for i in sorted_nodes:
+            importance[i[1]] = n
+            n -= 1
+        # calc total importance
+        res = 0
+        for edge in roads:
+            res += importance[edge[0]] + importance[edge[1]]
+        return res
+
+    
     
 
 
@@ -3503,5 +3523,5 @@ node6.right = node7
 in1 = [1,1,1,2,3,2,4,5]
 in2 = [0,1,2,2,1,4,3,4]
 
-print(solution.balanceBST(node4))
+print(solution.maximumImportance(5, [[0,1],[1,2],[2,3],[0,2],[1,3],[2,4]]))
 
