@@ -1387,26 +1387,17 @@ class Solution:
     
     # 350
     def intersect(self, nums1: List[int], nums2: List[int]) -> List[int]:
-        dict1 = {}
-        dict2 = {}
-        # fill the dicts
+        count1 = {}
+        count2 = {}
         for num in nums1:
-            if num in dict1:
-                dict1[num] = dict1[num] + 1
-            else:
-                dict1[num] = 1
+            count1[num] = 1 + count1.get(num, 0)
         for num in nums2:
-            if num in dict2:
-                dict2[num] = dict2[num] + 1
-            else:
-                dict2[num] = 1
-        # find intersects
-        intersects = []
-        for key in dict2.keys():
-            if key in dict1:
-                for i in range(min(dict1[key], dict2[key])):
-                    intersects.append(key)
-        return intersects
+            count2[num] = 1 + count2.get(num, 0)
+        intersect = []
+        for num in count1.keys():
+            if num in count2:
+                intersect += [num for i in range(min(count1[num], count2[num]))]
+        return intersect
     
     # 367
     def isPerfectSquare(self, num: int) -> bool:
@@ -3500,6 +3491,19 @@ class Solution:
             res += importance[edge[0]] + importance[edge[1]]
         return res
 
+    # 1550
+    def threeConsecutiveOdds(self, arr: List[int]) -> bool:
+        count = 0
+        for num in arr:
+            if num % 2 == 0:
+                count = 0
+            else:
+                count += 1
+                if count == 3:
+                    return True
+        return False
+    
+    
     
     
 
@@ -3523,5 +3527,5 @@ node6.right = node7
 in1 = [1,1,1,2,3,2,4,5]
 in2 = [0,1,2,2,1,4,3,4]
 
-print(solution.maximumImportance(5, [[0,1],[1,2],[2,3],[0,2],[1,3],[2,4]]))
+print(solution.intersect([1,2,2,1], [2,2]))
 
