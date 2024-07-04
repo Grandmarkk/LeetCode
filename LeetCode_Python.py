@@ -3399,6 +3399,18 @@ class Solution:
             return -1
         return left
     
+    # 1550
+    def threeConsecutiveOdds(self, arr: List[int]) -> bool:
+        count = 0
+        for num in arr:
+            if num % 2 == 0:
+                count = 0
+            else:
+                count += 1
+                if count == 3:
+                    return True
+        return False
+    
     # 1552
     def maxDistance(self, position: List[int], m: int) -> int:
         def feasible(position, m, mid):
@@ -3472,6 +3484,20 @@ class Solution:
                 res = key
         return res
     
+    # 2181
+    def mergeNodes(self, head: Optional[ListNode]) -> Optional[ListNode]:
+        res = ListNode(0)
+        temp = res
+        while head:
+            if head.val == 0:
+                if head.next:
+                    res.next = ListNode(0)
+                    res = res.next
+            elif head.val != 0:
+                res.val += head.val
+            head = head.next
+        return temp.next
+    
     # 2285
     def maximumImportance(self, n: int, roads: List[List[int]]) -> int:
         # count the number of edges of each node
@@ -3491,19 +3517,9 @@ class Solution:
             res += importance[edge[0]] + importance[edge[1]]
         return res
 
-    # 1550
-    def threeConsecutiveOdds(self, arr: List[int]) -> bool:
-        count = 0
-        for num in arr:
-            if num % 2 == 0:
-                count = 0
-            else:
-                count += 1
-                if count == 3:
-                    return True
-        return False
     
     
+
     
     
 
@@ -3527,5 +3543,5 @@ node6.right = node7
 in1 = [1,1,1,2,3,2,4,5]
 in2 = [0,1,2,2,1,4,3,4]
 
-print(solution.intersect([1,2,2,1], [2,2]))
+print(solution.minDifference([82,81,95,75,20]))
 
