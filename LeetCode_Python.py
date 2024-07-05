@@ -3484,6 +3484,31 @@ class Solution:
                 res = key
         return res
     
+    # 2058
+    def nodesBetweenCriticalPoints(self, head: Optional[ListNode]) -> List[int]:
+        critical_points = []
+        past = head.val
+        head = head.next
+        i = 1
+        # find all critical points
+        while head.next:
+            if (head.val > past and head.val > head.next.val) or (head.val < past and head.val < head.next.val):
+                critical_points.append(i)
+            past = head.val
+            head = head.next
+            i += 1
+        num_of_critical_points = len(critical_points)
+        if num_of_critical_points < 2:
+            return [-1, -1]
+        min_dist = critical_points[1] - critical_points[0]
+        i = 2
+        # find the min distance
+        while i < num_of_critical_points:
+            if critical_points[i] - critical_points[i-1] < min_dist:
+                min_dist = critical_points[i] - critical_points[i-1]
+            i += 1
+        return [min_dist, critical_points[-1] - critical_points[0]]
+    
     # 2181
     def mergeNodes(self, head: Optional[ListNode]) -> Optional[ListNode]:
         res = ListNode(0)
