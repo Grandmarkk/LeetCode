@@ -3542,6 +3542,15 @@ class Solution:
             res += importance[edge[0]] + importance[edge[1]]
         return res
 
+    # 2582
+    def passThePillow(self, n: int, time: int) -> int:
+        full_pass = time // (n - 1)
+        remainder = time % (n - 1)
+        if full_pass % 2 == 0:
+            return remainder + 1
+        else:
+            return n - remainder
+            
     
     
 
