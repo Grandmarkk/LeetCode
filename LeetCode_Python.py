@@ -3373,6 +3373,28 @@ class Solution:
             prefix_count[s] += 1
         return ans
     
+    # 1382
+    def balanceBST(self, root: TreeNode) -> TreeNode:
+        def traverse(root, elements):
+            if root == None:
+                return 
+            traverse(root.left, elements)
+            elements.append(root.val)
+            traverse(root.right, elements)
+
+        def build_tree(elements):
+            if not elements:
+                return None
+            mid = len(elements) // 2
+            root = TreeNode(elements[mid])
+            root.left = build_tree(elements[:mid])
+            root.right = build_tree(elements[mid + 1:])
+            return root
+        
+        elements = []
+        traverse(root, elements)
+        return build_tree(elements)
+    
     # 1482
     def minDays(self, bloomDay: List[int], m: int, k: int) -> int:
         def possible(bloomDay, day, k):
@@ -3398,6 +3420,14 @@ class Solution:
         if left > max(bloomDay):
             return -1
         return left
+    
+    # 1518
+    def numWaterBottles(self, numBottles: int, numExchange: int) -> int:
+        res = numBottles
+        while numBottles >= numExchange:
+            res += numBottles // numExchange
+            numBottles = numBottles % numExchange + numBottles // numExchange
+        return res
     
     # 1550
     def threeConsecutiveOdds(self, arr: List[int]) -> bool:
@@ -3433,43 +3463,6 @@ class Solution:
                 right = mid - 1
         return left if not feasible(position, m, right) else right
     
-    # 2037
-    def minMovesToSeat(self, seats: List[int], students: List[int]) -> int:
-        seats.sort()
-        students.sort()
-        return sum([abs(x - y) for x, y in zip(seats, students)])
-    
-    # 2575
-    def divisibilityArray(self, word: str, m: int) -> List[int]:
-        div = []
-        cur = 0
-        for i in word:
-            cur = (cur * 10 + int(i)) % m
-            div.append(1 if cur == 0 else 0)
-        return div
-
-    # 1382
-    def balanceBST(self, root: TreeNode) -> TreeNode:
-        def traverse(root, elements):
-            if root == None:
-                return 
-            traverse(root.left, elements)
-            elements.append(root.val)
-            traverse(root.right, elements)
-
-        def build_tree(elements):
-            if not elements:
-                return None
-            mid = len(elements) // 2
-            root = TreeNode(elements[mid])
-            root.left = build_tree(elements[:mid])
-            root.right = build_tree(elements[mid + 1:])
-            return root
-        
-        elements = []
-        traverse(root, elements)
-        return build_tree(elements)
-
     # 1791
     def findCenter(self, edges: List[List[int]]) -> int:
         count = {}
@@ -3483,6 +3476,12 @@ class Solution:
                 max_count = val
                 res = key
         return res
+    
+    # 2037
+    def minMovesToSeat(self, seats: List[int], students: List[int]) -> int:
+        seats.sort()
+        students.sort()
+        return sum([abs(x - y) for x, y in zip(seats, students)])
     
     # 2058
     def nodesBetweenCriticalPoints(self, head: Optional[ListNode]) -> List[int]:
@@ -3541,6 +3540,15 @@ class Solution:
         for edge in roads:
             res += importance[edge[0]] + importance[edge[1]]
         return res
+    
+    # 2575
+    def divisibilityArray(self, word: str, m: int) -> List[int]:
+        div = []
+        cur = 0
+        for i in word:
+            cur = (cur * 10 + int(i)) % m
+            div.append(1 if cur == 0 else 0)
+        return div
 
     # 2582
     def passThePillow(self, n: int, time: int) -> int:
@@ -3577,5 +3585,5 @@ node6.right = node7
 in1 = [1,1,1,2,3,2,4,5]
 in2 = [0,1,2,2,1,4,3,4]
 
-print(solution.minDifference([82,81,95,75,20]))
+print(solution.numWaterBottles(9, 3))
 
