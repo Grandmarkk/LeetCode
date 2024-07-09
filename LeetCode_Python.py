@@ -3463,6 +3463,21 @@ class Solution:
                 right = mid - 1
         return left if not feasible(position, m, right) else right
     
+    # 1701
+    def averageWaitingTime(self, customers: List[List[int]]) -> float:
+        cur_time = customers[0][0]
+        total_time = 0
+        length = 0
+        for arrival_time, order_duration in customers:
+            if cur_time > arrival_time:
+                total_time += cur_time - arrival_time + order_duration
+                cur_time += order_duration
+            else:
+                total_time += order_duration
+                cur_time = arrival_time + order_duration
+            length += 1
+        return total_time / length
+    
     # 1791
     def findCenter(self, edges: List[List[int]]) -> int:
         count = {}
@@ -3558,8 +3573,6 @@ class Solution:
             return remainder + 1
         else:
             return n - remainder
-            
-    
     
 
     
@@ -3585,5 +3598,5 @@ node6.right = node7
 in1 = [1,1,1,2,3,2,4,5]
 in2 = [0,1,2,2,1,4,3,4]
 
-print(solution.numWaterBottles(9, 3))
+print(solution.averageWaitingTime([[5,2],[5,4],[10,3],[20,1]]))
 
