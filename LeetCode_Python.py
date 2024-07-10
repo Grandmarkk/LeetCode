@@ -3463,6 +3463,18 @@ class Solution:
                 right = mid - 1
         return left if not feasible(position, m, right) else right
     
+    # 1598
+    def minOperations(self, logs: List[str]) -> int:
+        operations = 0
+        for log in logs:
+            if log == "../":
+                operations = max(0, operations - 1)
+            elif log == "./":
+                continue
+            else:
+                operations += 1
+        return operations
+    
     # 1701
     def averageWaitingTime(self, customers: List[List[int]]) -> float:
         cur_time = customers[0][0]
@@ -3574,6 +3586,7 @@ class Solution:
         else:
             return n - remainder
     
+    
 
     
     
@@ -3598,5 +3611,5 @@ node6.right = node7
 in1 = [1,1,1,2,3,2,4,5]
 in2 = [0,1,2,2,1,4,3,4]
 
-print(solution.averageWaitingTime([[5,2],[5,4],[10,3],[20,1]]))
+print(solution.minOperations(["d1/","d2/","../","d21/","./"]))
 
