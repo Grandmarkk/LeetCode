@@ -570,18 +570,6 @@ class Solution:
                 left=  mid + 1
         return False
     
-    # 75
-    def sortColors(self, nums: List[int]) -> None:
-        counts = [0, 0, 0]
-        for num in nums:
-            counts[num] += 1
-        index = 0
-        for i in range(3):
-            while counts[i] > 0:
-                nums[index] = i
-                counts[i] -= 1
-                index += 1
-    
     # 83
     def deleteDuplicates(self, head):
         '''
@@ -1387,17 +1375,26 @@ class Solution:
     
     # 350
     def intersect(self, nums1: List[int], nums2: List[int]) -> List[int]:
-        count1 = {}
-        count2 = {}
+        dict1 = {}
+        dict2 = {}
+        # fill the dicts
         for num in nums1:
-            count1[num] = 1 + count1.get(num, 0)
+            if num in dict1:
+                dict1[num] = dict1[num] + 1
+            else:
+                dict1[num] = 1
         for num in nums2:
-            count2[num] = 1 + count2.get(num, 0)
-        intersect = []
-        for num in count1.keys():
-            if num in count2:
-                intersect += [num for i in range(min(count1[num], count2[num]))]
-        return intersect
+            if num in dict2:
+                dict2[num] = dict2[num] + 1
+            else:
+                dict2[num] = 1
+        # find intersects
+        intersects = []
+        for key in dict2.keys():
+            if key in dict1:
+                for i in range(min(dict1[key], dict2[key])):
+                    intersects.append(key)
+        return intersects
     
     # 367
     def isPerfectSquare(self, num: int) -> bool:
@@ -1849,34 +1846,6 @@ class Solution:
                 modes.append(key)
         return modes
     
-    # 502
-    def findMaximizedCapital(self, k: int, w: int, profits: List[int], capital: List[int]) -> int:
-        # note all the projects in order of their cost
-        projects = {} # profit : [costs]
-        for profit, cap in zip(profits, capital):
-            if not profit in projects:
-                projects[profit] = [cap]
-            else:
-                heapq.heappush(projects[profit], cap)
-        projects = sorted(projects.items(), reverse=True)
-        # find max profit
-        length = len(projects)
-        while k > 0 and projects:
-            cur = 0
-            while cur < length and projects[cur][1][0] > w:
-                cur += 1
-            # valid project found
-            if cur < length:
-                w += projects[cur][0]
-                heapq.heappop(projects[cur][1])
-                if projects[cur][1] == []:
-                    del projects[cur]
-                    length -= 1
-                k -= 1
-            else:
-                return w
-        return w
-    
     # 504
     def convertToBase7(self, num: int) -> str:
         if num == 0:
@@ -2248,6 +2217,7 @@ class Solution:
         return ans
 
 
+# %%
 import heapq
 
 # 703
@@ -2399,21 +2369,6 @@ class Solution:
         nums.sort()
         n = len(nums)
         return max(nums[0] * nums[1] * nums[n - 1], nums[n - 3] * nums[n - 2] * nums[n - 1])
-    
-    # 633
-    def judgeSquareSum(self, c: int) -> bool:
-        a = 0
-        b = math.floor(math.sqrt(c))
-        while a <= b:
-            cur_sum = a ** 2 + b ** 2
-            if cur_sum > c:
-                b -= 1
-            elif cur_sum < c:
-                a += 1
-            else:
-                print(a, b)
-                return True
-        return False
     
     # 637
     def averageOfLevels(self, root: Optional[TreeNode]) -> List[float]:
@@ -3094,43 +3049,6 @@ class Solution:
         ans.append(''.join(curWord))
         return " ".join(ans)
     
-    # 826
-    def maxProfitAssignment(self, difficulty: List[int], profit: List[int], worker: List[int]) -> int:
-        # find the max profit at each difficulty level
-        profits = {}
-        cur_max = 0
-        for prof, dif in sorted(zip(profit, difficulty), key=lambda x : x[1]):
-            if prof > cur_max:
-                cur_max = prof
-            profits[dif] = cur_max
-
-        profits = sorted(profits.items())
-        worker.sort(reverse=True)
-        length = len(profits)
-        total_profit = 0
-        cur = length - 1
-        # assign work for each worker
-        for i in worker:
-            # binary search for a work
-            left = 0
-            right = cur
-            index = -1
-            while left <= right:
-                mid = (left + right) // 2
-                if profits[mid][0] > i:
-                    right = mid - 1
-                elif profits[mid][0] < i:
-                    left = mid + 1
-                else:
-                    index = mid
-                    break
-            if index == -1 and right > -1:
-                index = right
-            if index != -1:
-                total_profit += profits[index][1]
-                cur = index
-        return total_profit
-    
     # 830
     def largeGroupPositions(self, s: str) -> List[List[int]]:
         left = 0
@@ -3239,32 +3157,6 @@ class Solution:
                 minSpeed = min(minSpeed, speed)
                 right = speed - 1
         return minSpeed
-    
-    # 945
-    def minIncrementForUnique(self, nums: List[int]) -> int:
-        counts = {}
-        maxNum = nums[0]
-        minNum = nums[0]
-        # count occurences
-        for num in nums:
-            counts[num] = 1 + counts.get(num, 0)
-            if num > maxNum:
-                maxNum = num
-            if num < minNum:
-                minNum = num
-        moves = 0
-        i = minNum
-        # count moves
-        while i < maxNum:
-            if counts.get(i, 0) > 1:
-                moves += counts[i] - 1
-                counts[i+1] = counts[i] - 1 + counts.get(i+1, 0)
-            i += 1
-        # largest num
-        if counts.get(i, 0) > 1:
-            remainder = counts[i]
-            moves += sum([x for x in range(1, remainder)])
-        return moves
 
     # 1002
     def commonChars(self, words: List[str]) -> List[str]:
@@ -3290,284 +3182,6 @@ class Solution:
                 ans.append(key)
         return ans
     
-    # 1038
-    def bstToGst(self, root: TreeNode) -> TreeNode:
-        def traverse(root, vals):
-            if root == None:
-                return 
-            traverse(root.right, vals)
-            vals.append(root.val)
-            traverse(root.left, vals)
-
-        def helper(root, sums):
-            if root == None:
-                return
-            root.val = sums[root.val]
-            helper(root.left, sums)
-            helper(root.right, sums,)
-        
-        vals = []
-        traverse(root, vals)
-        greater_sum = {}
-        cur = 0
-        for i in range(len(vals)):
-            cur += vals[i]
-            greater_sum[vals[i]] = cur
-
-        helper(root, greater_sum)
-        return root
-    
-    # 1052
-    def maxSatisfied(self, customers: List[int], grumpy: List[int], minutes: int) -> int:
-        satisfied = 0
-        i = 0
-        while i < len(customers):
-            if grumpy[i] == 0:
-                satisfied += customers[i]
-                customers[i] = 0
-            i += 1
-
-        max_boost = 0
-        cur_boost = 0
-        i = 0
-        while i < len(customers):
-            cur_boost += customers[i]
-            if i >= minutes:
-                cur_boost -= customers[i - minutes]
-            max_boost = max(cur_boost, max_boost)
-            i += 1
-        return satisfied + max_boost
-    
-    # 1122
-    def relativeSortArray(self, arr1: List[int], arr2: List[int]) -> List[int]:
-        counts = {}
-        # count arr1 elements
-        for num in arr1:
-            counts[num] = 1 + counts.get(num, 0)
-        ans = []
-        # get first part
-        for num in arr2:
-            for i in range(counts[num]):
-                ans.append(num)
-            del counts[num]
-        temp = []
-        # get remaining part
-        for key, val in counts.items():
-            for i in range(val):
-                temp.append(key)
-        temp.sort()
-        ans = ans + temp
-        return ans
-    
-    # 1248
-    def numberOfSubarrays(self, nums: List[int], k: int) -> int:
-        nums = [x % 2 for x in nums]
-        prefix_count = [0] * (len(nums) + 1)
-        prefix_count[0] = 1
-        s = 0
-        ans = 0
-        for num in nums:
-            s += num
-            if s >= k:
-                ans += prefix_count[s - k]
-            prefix_count[s] += 1
-        return ans
-    
-    # 1382
-    def balanceBST(self, root: TreeNode) -> TreeNode:
-        def traverse(root, elements):
-            if root == None:
-                return 
-            traverse(root.left, elements)
-            elements.append(root.val)
-            traverse(root.right, elements)
-
-        def build_tree(elements):
-            if not elements:
-                return None
-            mid = len(elements) // 2
-            root = TreeNode(elements[mid])
-            root.left = build_tree(elements[:mid])
-            root.right = build_tree(elements[mid + 1:])
-            return root
-        
-        elements = []
-        traverse(root, elements)
-        return build_tree(elements)
-    
-    # 1482
-    def minDays(self, bloomDay: List[int], m: int, k: int) -> int:
-        def possible(bloomDay, day, k):
-            cnt = 0
-            num = 0
-            for bd in bloomDay:
-                if bd <= day:
-                    cnt += 1
-                else:
-                    num += cnt // k
-                    cnt = 0
-            num += cnt // k
-            return num
-
-        left = 1
-        right = max(bloomDay)
-        while left <= right:
-            mid = (left + right) // 2
-            if possible(bloomDay, mid, k) >= m:
-                right = mid - 1
-            elif possible(bloomDay, mid, k) < m:
-                left = mid + 1
-        if left > max(bloomDay):
-            return -1
-        return left
-    
-    # 1518
-    def numWaterBottles(self, numBottles: int, numExchange: int) -> int:
-        res = numBottles
-        while numBottles >= numExchange:
-            res += numBottles // numExchange
-            numBottles = numBottles % numExchange + numBottles // numExchange
-        return res
-    
-    # 1550
-    def threeConsecutiveOdds(self, arr: List[int]) -> bool:
-        count = 0
-        for num in arr:
-            if num % 2 == 0:
-                count = 0
-            else:
-                count += 1
-                if count == 3:
-                    return True
-        return False
-    
-    # 1552
-    def maxDistance(self, position: List[int], m: int) -> int:
-        def feasible(position, m, mid):
-            cnt = 1
-            prev = position[0]
-            for i in range(1, len(position)):
-                if position[i] - prev >= mid:
-                    cnt += 1
-                    prev = position[i]
-            return cnt >= m
-        
-        position.sort()
-        left = 1
-        right = position[-1] - position[0]
-        while left + 1 < right:
-            mid = (left + right) // 2
-            if feasible(position, m, mid):
-                left = mid
-            else:
-                right = mid - 1
-        return left if not feasible(position, m, right) else right
-    
-    # 1598
-    def minOperations(self, logs: List[str]) -> int:
-        operations = 0
-        for log in logs:
-            if log == "../":
-                operations = max(0, operations - 1)
-            elif log == "./":
-                continue
-            else:
-                operations += 1
-        return operations
-    
-    # 1701
-    def averageWaitingTime(self, customers: List[List[int]]) -> float:
-        cur_time = customers[0][0]
-        total_time = 0
-        length = 0
-        for arrival_time, order_duration in customers:
-            if cur_time > arrival_time:
-                total_time += cur_time - arrival_time + order_duration
-                cur_time += order_duration
-            else:
-                total_time += order_duration
-                cur_time = arrival_time + order_duration
-            length += 1
-        return total_time / length
-    
-    # 1791
-    def findCenter(self, edges: List[List[int]]) -> int:
-        count = {}
-        for i in edges[:2]:
-            for j in i:
-                count[j] = 1 + count.get(j, 0)
-        max_count = 0
-        res = -1
-        for key, val in count.items():
-            if val > max_count:
-                max_count = val
-                res = key
-        return res
-    
-    # 2037
-    def minMovesToSeat(self, seats: List[int], students: List[int]) -> int:
-        seats.sort()
-        students.sort()
-        return sum([abs(x - y) for x, y in zip(seats, students)])
-    
-    # 2058
-    def nodesBetweenCriticalPoints(self, head: Optional[ListNode]) -> List[int]:
-        critical_points = []
-        past = head.val
-        head = head.next
-        i = 1
-        # find all critical points
-        while head.next:
-            if (head.val > past and head.val > head.next.val) or (head.val < past and head.val < head.next.val):
-                critical_points.append(i)
-            past = head.val
-            head = head.next
-            i += 1
-        num_of_critical_points = len(critical_points)
-        if num_of_critical_points < 2:
-            return [-1, -1]
-        min_dist = critical_points[1] - critical_points[0]
-        i = 2
-        # find the min distance
-        while i < num_of_critical_points:
-            if critical_points[i] - critical_points[i-1] < min_dist:
-                min_dist = critical_points[i] - critical_points[i-1]
-            i += 1
-        return [min_dist, critical_points[-1] - critical_points[0]]
-    
-    # 2181
-    def mergeNodes(self, head: Optional[ListNode]) -> Optional[ListNode]:
-        res = ListNode(0)
-        temp = res
-        while head:
-            if head.val == 0:
-                if head.next:
-                    res.next = ListNode(0)
-                    res = res.next
-            elif head.val != 0:
-                res.val += head.val
-            head = head.next
-        return temp.next
-    
-    # 2285
-    def maximumImportance(self, n: int, roads: List[List[int]]) -> int:
-        # count the number of edges of each node
-        connections = [0 for i in range(n)]
-        for edge in roads:
-            for j in edge:
-                connections[j] += 1
-        # assign importance
-        importance = [0 for i in range(n)]
-        sorted_nodes = sorted(zip(connections, [i for i in range(n)]), reverse=True) # (occurence, node)
-        for i in sorted_nodes:
-            importance[i[1]] = n
-            n -= 1
-        # calc total importance
-        res = 0
-        for edge in roads:
-            res += importance[edge[0]] + importance[edge[1]]
-        return res
-    
     # 2575
     def divisibilityArray(self, word: str, m: int) -> List[int]:
         div = []
@@ -3577,39 +3191,26 @@ class Solution:
             div.append(1 if cur == 0 else 0)
         return div
 
-    # 2582
-    def passThePillow(self, n: int, time: int) -> int:
-        full_pass = time // (n - 1)
-        remainder = time % (n - 1)
-        if full_pass % 2 == 0:
-            return remainder + 1
-        else:
-            return n - remainder
+    def maxDepth(self, root: Optional[TreeNode]) -> int:
+        def getDepth(root, depth):
+            if not root:
+                return depth
+            return max(getDepth(root.left, depth + 1), getDepth(root.right, depth + 1))
+        return getDepth(root, 0)
     
-    
-
-    
-    
-
-
 # Test
 solution = Solution()
-node1 = TreeNode(1)
-node2 = TreeNode(2)
-node3 = TreeNode(3)
-node4 = TreeNode(4)
-node5 = TreeNode(5)
-node6 = TreeNode(6)
-node7 = TreeNode(7)
-node4.left = node2
-node4.right = node6
-node2.left = node1
-node2.right = node3
-node6.left = node5
-node6.right = node7
+node1 = Node(1)
+node2 = Node(2)
+node3 = Node(3)
+node4 = Node(4)
+node1.next = node2
+node2.next = node3
+node3.next = node4
+node4.next = None
 
-in1 = [1,1,1,2,3,2,4,5]
-in2 = [0,1,2,2,1,4,3,4]
+ln1 = ListNode(5)
+ln2 = ListNode(5)
 
-print(solution.minOperations(["d1/","d2/","../","d21/","./"]))
+print(solution.subarraysDivByK([23,2,4,6,7], 6))
 
