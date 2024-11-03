@@ -1173,12 +1173,13 @@ class Solution:
     
     # 258
     def addDigits(self, num):
-        while num / 10 >= 1:
-            temp = num
-            num = 0
-            while temp > 0:
-                num += temp % 10
-                temp = temp // 10
+        def sumDigits(num: int) -> int:
+            if num == 0:
+                return 0
+            return num % 10 + sumDigits(num // 10)
+        
+        while num // 10 != 0:
+            num = sumDigits(num)
         return num
             
     # 263
