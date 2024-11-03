@@ -1200,15 +1200,14 @@ class Solution:
             
     # 268
     def missingNumber(self, nums):
-        counts = [0] * (len(nums) + 1)
-        for num in nums:
-            counts[num] += 1
+        numsSet = set(nums)
         i = 0
-        while i < len(counts):
-            if counts[i] == 0:
+        for num in numsSet:
+            if i != num:
                 return i
             i += 1
-        return -1
+
+        return i
         
     # 278
     def firstBadVersion(self, n):
