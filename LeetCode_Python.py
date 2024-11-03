@@ -1184,7 +1184,7 @@ class Solution:
             
     # 263
     def isUgly(self, n):
-        if n < 0:
+        if n <= 0:
             return False
         while n > 0:
             if n == 1:
