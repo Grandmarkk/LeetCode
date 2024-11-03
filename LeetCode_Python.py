@@ -1154,6 +1154,23 @@ class Solution:
                 return False
         return True
     
+    # 257
+    def binaryTreePaths(self, root: Optional[TreeNode]) -> List[str]:
+        def constructPath(path: List[int]) -> str:
+            return "->".join([str(p) for p in path])
+
+        def getPaths(root: Optional[TreeNode], curPath: List[int]):
+            if not root.left and not root.right:
+                paths.append(curPath + [root.val])
+            if root.left:
+                getPaths(root.left, curPath + [root.val])
+            if root.right:
+                getPaths(root.right, curPath + [root.val])
+
+        paths = []
+        getPaths(root, [])
+        return [constructPath(path) for path in paths]
+    
     # 258
     def addDigits(self, num):
         while num / 10 >= 1:
