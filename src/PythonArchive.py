@@ -3199,6 +3199,28 @@ class Solution:
                 ans.append(key)
         return ans
     
+    # 1768
+    def mergeAlternately(self, word1: str, word2: str) -> str:
+        len1 = len(word1)
+        len2 = len(word2)
+        res = []
+        idx1 = 0
+        idx2 = 0
+        while idx1 < len1 and idx2 < len2:
+            if idx2 < idx1:
+                res.append(word2[idx2])
+                idx2 += 1
+            else:
+                res.append(word1[idx1])
+                idx1 += 1
+        while idx1 < len1:
+            res.append(word1[idx1])
+            idx1 += 1
+        while idx2 < len2:
+            res.append(word2[idx2])
+            idx2 += 1
+        return ''.join(res)
+    
     # 2575
     def divisibilityArray(self, word: str, m: int) -> List[int]:
         div = []
