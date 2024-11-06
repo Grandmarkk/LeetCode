@@ -3199,6 +3199,24 @@ class Solution:
                 ans.append(key)
         return ans
     
+    # 1071
+    def gcdOfStrings(self, str1: str, str2: str) -> str:
+        len1 = len(str1)
+        len2 = len(str2)
+        if len1 < len2:
+            i = len1
+            while i > 0:
+                if str1[0:i] * (len2 // i) == str2 and str1[0:i] * (len1 // i) == str1:
+                    return str1[0:i]
+                i -= 1
+        else:
+            i = len2
+            while i > 0:
+                if str2[0:i] * (len1 // i) == str1 and str2[0:i] * (len2 // i) == str2:
+                    return str2[0:i]
+                i -= 1
+        return ""
+    
     # 1768
     def mergeAlternately(self, word1: str, word2: str) -> str:
         len1 = len(word1)
