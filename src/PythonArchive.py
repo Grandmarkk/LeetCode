@@ -3217,6 +3217,20 @@ class Solution:
                 i -= 1
         return ""
     
+    # 1431
+    def kidsWithCandies(self, candies: List[int], extraCandies: int) -> List[bool]:
+        maxCandies = candies[0]
+        for i in candies:
+            if i > maxCandies:
+                maxCandies = i
+        res = []
+        for i in candies:
+            if i + extraCandies >= maxCandies:
+                res.append(True)
+            else:
+                res.append(False)
+        return res
+    
     # 1768
     def mergeAlternately(self, word1: str, word2: str) -> str:
         len1 = len(word1)
