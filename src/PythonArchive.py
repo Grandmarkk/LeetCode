@@ -891,6 +891,27 @@ class Solution:
         postorder(root)
         return ans
     
+    # 151
+    def reverseWords(self, s: str) -> str:
+        def getWords(s: str) -> List[str]:
+            words = []
+            length = len(s)
+            i = 0
+            while i < length:
+                while i < length and s[i] == " ":
+                    i += 1
+                j = i
+                while j < length and s[j] != " ":
+                    j += 1
+                curWord = s[i:j]
+                if curWord != "":
+                    words.append(curWord)
+                i = j
+            return words
+        
+        s = getWords(s)
+        return ' '.join(s[::-1])
+    
     # 153
     def findMin(self, nums: List[int]) -> int:
         left = 0
