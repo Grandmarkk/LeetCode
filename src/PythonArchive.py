@@ -1681,6 +1681,39 @@ class Solution:
                 left = mid + 1
         return right
     
+    # 443
+    def compress(self, chars: List[str]) -> int:
+        def numDigits(num: int) -> List[str]:
+            digits = []
+            while num > 0:
+                digits.append(str(num % 10))
+                num //= 10
+            return digits[::-1]
+
+        count = 1
+        cur = chars[0]
+        res = []
+        i = 1
+        while i < len(chars):
+            if chars[i] != cur:
+                res.append(cur)
+                if count > 1:
+                    res += numDigits(count)
+                count = 1
+                cur = chars[i]
+            else:
+                count += 1
+            i += 1
+        res.append(cur)
+        if count > 1:
+            res += numDigits(count)
+        i = 0
+        while i < len(res):
+            chars[i] = res[i]
+            i += 1
+
+        return len(res)
+    
     # 448
     def findDisappearedNumbers(self, nums: List[int]) -> List[int]:
         present = [False] * len(nums)
