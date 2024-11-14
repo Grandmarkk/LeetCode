@@ -3285,6 +3285,24 @@ class Solution:
                 res.append(False)
         return res
     
+    # 1679
+    def maxOperations(self, nums: List[int], k: int) -> int:
+        nums.sort()
+        left = 0
+        right = len(nums) - 1
+        count = 0
+        while left < right:
+            curSum = nums[left] + nums[right]
+            if curSum > k:
+                right -= 1
+            elif curSum < k:
+                left += 1
+            else:
+                count += 1
+                left += 1
+                right -= 1
+        return count
+    
     # 1768
     def mergeAlternately(self, word1: str, word2: str) -> str:
         len1 = len(word1)
