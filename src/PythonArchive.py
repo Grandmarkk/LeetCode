@@ -3341,6 +3341,13 @@ class Solution:
             return max(getDepth(root.left, depth + 1), getDepth(root.right, depth + 1))
         return getDepth(root, 0)
     
+    # 2716
+    def minimizedStringLength(self, s: str) -> int:
+        charSet = [0] * 26
+        for char in s:
+            charSet[ord(char) - ord('a')] = 1
+        return sum(charSet)
+    
 # Test
 solution = Solution()
 node1 = Node(1)
