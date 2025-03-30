@@ -3325,6 +3325,20 @@ class Solution:
             idx2 += 1
         return ''.join(res)
     
+    # 2109
+    def addSpaces(self, s: str, spaces: List[int]) -> str:
+        cur = 0
+        i = 0
+        res = []
+        while cur < len(spaces) and i < len(s):
+            if i == spaces[cur]:
+                res.append(' ')
+                cur += 1
+            else:
+                res.append(s[i])
+                i += 1
+        return ''.join(res) + s[i:]
+    
     # 2575
     def divisibilityArray(self, word: str, m: int) -> List[int]:
         div = []
