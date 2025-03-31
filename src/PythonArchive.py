@@ -3339,6 +3339,10 @@ class Solution:
                 i += 1
         return ''.join(res) + s[i:]
     
+    # 2278
+    def percentageLetter(self, s: str, letter: str) -> int:
+        return s.count(letter) // len(s) * 100
+    
     # 2575
     def divisibilityArray(self, word: str, m: int) -> List[int]:
         div = []
