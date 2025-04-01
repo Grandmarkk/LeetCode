@@ -3339,6 +3339,21 @@ class Solution:
                 i += 1
         return ''.join(res) + s[i:]
     
+    # 2140
+    def mostPoints(self, questions: List[List[int]]) -> int:
+        length = len(questions)
+        i = length - 1
+        points = [questions[i][0]]
+        i -= 1
+        while i >= 0:
+            prevIdx = questions[i][1] + i + 1
+            if prevIdx >= length:
+                points.append(max(questions[i][0], points[-1]))
+            else:
+                points.append(max(points[-1], questions[i][0] + points[length - i - 2 - questions[i][1]]))
+            i -= 1
+        return points[-1]
+    
     # 2278
     def percentageLetter(self, s: str, letter: str) -> int:
         return s.count(letter) // len(s) * 100
