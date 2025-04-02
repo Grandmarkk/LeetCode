@@ -3381,6 +3381,16 @@ class Solution:
             charSet[ord(char) - ord('a')] = 1
         return sum(charSet)
     
+    # 2873
+    def maximumTripletValue(self, nums: List[int]) -> int:
+        length = len(nums)
+        maxVal = 0
+        for i in range(length):
+            for j in range(i+1, length):
+                for k in range(j+1, length):
+                    maxVal = max(maxVal, (nums[i] - nums[j]) * nums[k])
+        return maxVal
+    
 # Test
 solution = Solution()
 node1 = Node(1)
